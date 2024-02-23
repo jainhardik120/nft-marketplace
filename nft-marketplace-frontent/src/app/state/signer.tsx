@@ -1,7 +1,7 @@
 "use client"
 
 import { createContext, useContext, ReactNode, useState, useEffect } from "react";
-import { JsonRpcSigner, Web3Provider } from "@ethersproject/providers";
+import {JsonRpcSigner, BrowserProvider} from "ethers";
 import Web3Modal from "web3modal";
 import { ApolloClient, ApolloProvider, InMemoryCache } from "@apollo/client";
 type SignerContextType = {
@@ -34,8 +34,8 @@ export const SignerProvider = ({ children }: { children: ReactNode }) => {
     try {
       const web3modal = new Web3Modal({ cacheProvider: true });
       const instance = await web3modal.connect();
-      const provider = new Web3Provider(instance);
-      const signer = provider.getSigner();
+      const provider = new BrowserProvider(instance);
+      const signer = await provider.getSigner();
       const address = await signer.getAddress();
       setSigner(signer);
       setAddress(address);

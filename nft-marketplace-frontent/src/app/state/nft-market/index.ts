@@ -2,12 +2,11 @@
 
 import { Contract } from "ethers";
 import useSigner from "../signer"
-import { TransactionResponse } from "@ethersproject/abstract-provider";
 import MarketPlace from "../../../../artifacts/contracts/MarketPlace.json"
 import useOwnedNFTs from "./useOwnedNFTs";
 import useOwnedListedNFTs from "./useOwnedListedNFTs";
 import useListedNFTs from "./useListedNFTs";
-import { BigNumberish } from "ethers";
+import { BigNumberish, TransactionResponse } from "ethers";
 
 const useNFTMarket = () => {
     const { signer } = useSigner();

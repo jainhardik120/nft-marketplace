@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@apollo/client": "^3.9.5",
-    "@ethersproject/providers": "^5.7.2",
     "classnames": "^2.5.1",
     "ethers": "^6.11.1",
     "formidable": "^3.5.1",
