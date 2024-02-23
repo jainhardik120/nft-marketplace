@@ -20,7 +20,7 @@ type OwnedNFTsVariables = {
     owner: string
 }
 
-const useOwnedNFTs = () => {
+const useOwnedListedNFTs = () => {
     const { address } = useSigner();
     const { data, error, loading } = useQuery<OwnedNFTs, OwnedNFTsVariables>(GET_OWNED_NFTS, { variables: { owner: address ?? "" }, skip: !address });
     const ownedNFTs = data?.nfts.map((raw) => <mNFT>{
@@ -29,12 +29,12 @@ const useOwnedNFTs = () => {
         price: raw.price == "0" ? "0" : formatEther(raw.price),
         tokenURI: raw.tokenURI,
     });
-    return { ownedNFTs };
+    return { ownedListedNFTs: ownedNFTs };
 }
 
 const GET_OWNED_NFTS = gql`
     query GetOwnedNfts($owner : String!) {
-        nfts(where : {to : $owner, price : "0"}) {
+        nfts(where : {from : $owner, price_not : "0"}) {
             id
             from
             to
@@ -44,4 +44,4 @@ const GET_OWNED_NFTS = gql`
     }
 `
 
-export default useOwnedNFTs;
+export default useOwnedListedNFTs;

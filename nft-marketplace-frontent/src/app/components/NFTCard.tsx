@@ -1,7 +1,7 @@
 "use client"
 
 import classNames from "classnames";
-import { BigNumber } from "ethers";
+import { BigNumberish as BigNumber } from "ethers";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
@@ -9,6 +9,8 @@ import useNFTMarket from "../state/nft-market";
 import { NFT } from "../state/nft-market/interfaces";
 import useSigner from "../state/signer";
 import { ipfsToHTTPS } from "../state/nft-market/helpers";
+import SellPopup from "./SellPopup";
+import Image from "next/image";
 
 type NFTMetadata = {
   name: string;
@@ -24,7 +26,7 @@ type NFTCardProps = {
 const NFTCard = (props: NFTCardProps) => {
   const { nft, className } = props;
   const { address } = useSigner();
-//   const { listNFT, cancelListing, buyNFT } = useNFTMarket();
+  const { listNFT , cancelListing} = useNFTMarket();
 //   const router = useRouter();
   const [meta, setMeta] = useState<NFTMetadata>();
   const [loading, setLoading] = useState(false);
@@ -64,7 +66,6 @@ const NFTCard = (props: NFTCardProps) => {
     setLoading(true);
     try {
     //   await buyNFT(nft);
-      router.push("/owned");
       toast.success(
         "You collection will be updated shortly! Refresh the page."
       );
@@ -78,7 +79,7 @@ const NFTCard = (props: NFTCardProps) => {
   const onCancelClicked = async () => {
     setLoading(true);
     try {
-    //   await cancelListing(nft.id);
+      await cancelListing(nft.id);
       toast.success(
         "You canceled this listing. Changes will be reflected shortly."
       );
@@ -93,7 +94,7 @@ const NFTCard = (props: NFTCardProps) => {
     setSellPopupOpen(false);
     setLoading(true);
     try {
-    //   await listNFT(nft.id, price);
+      await listNFT(nft.id, price);
       toast.success(
         "You listed this NFT for sale. Changes will be reflected shortly."
       );
@@ -156,11 +157,11 @@ const NFTCard = (props: NFTCardProps) => {
           </>
         )}
       </button>
-      {/* <SellPopup
+      <SellPopup
         open={sellPopupOpen}
         onClose={() => setSellPopupOpen(false)}
         onSubmit={onSellConfirmed}
-      /> */}
+      />
     </div>
   );
 };
