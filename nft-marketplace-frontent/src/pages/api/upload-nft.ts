@@ -1,9 +1,10 @@
 import { NextApiHandler, NextApiRequest, NextApiResponse } from 'next';
 import formidable from 'formidable';
 import { tmpdir } from "os";
-import { File, NFTStorage } from "nft.storage";
-import { readFileSync, unlinkSync } from 'fs';
-const client = new NFTStorage({ token: `eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJkaWQ6ZXRocjoweGZBMjc4ZGY4MzQ2QjI4ZDQ0RTI1Q0I4NDQ2ZDgzNDVkQkYxMDI2NTkiLCJpc3MiOiJuZnQtc3RvcmFnZSIsImlhdCI6MTcwODU1MTU4NjczMiwibmFtZSI6Im5mdC1tYXJrZXRwbGFjZSJ9.pkM1vJRynusDT3GZdmww0TTLOJa5AtYT1oe-Nuf08xI` });
+import { createReadStream } from 'fs';
+import pinataSDK from "@pinata/sdk";
+
+const pinata = new pinataSDK({ pinataJWTKey: process.env.PINATA_JWT_KEY });
 
 export const config = {
     api: {
@@ -20,27 +21,24 @@ const handler: NextApiHandler = async (req: NextApiRequest, res: NextApiResponse
                 resolve({ ...fields, ...files });
             });
         });
-        console.log('Data:', data.image);
-        const {
-            filepath,
-            originalFilename = "image",
-            mimetype = "image",
-        } = data.image[0];
-        console.log(filepath);
-        const buffer = readFileSync(filepath);
-        const arraybuffer = Uint8Array.from(buffer).buffer;
-        const file = new File([arraybuffer], originalFilename, {
-            type: mimetype,
+        const { filepath } = data.image[0];
+        const fileUploadaRes = await pinata.pinFileToIPFS(createReadStream(filepath), {
+            pinataMetadata: {
+                name: "image"
+            },
+            pinataOptions: {
+                cidVersion: 0
+            }
         });
-        console.log(data.name[0])
-        const metadata = await client.store({
+        const metadataResponse = await pinata.pinJSONToIPFS({
             name: data.name[0],
             description: data.description[0],
-            image: file,
+            image: `ipfs://${fileUploadaRes.IpfsHash}`
+        })
+        res.status(200).json({
+            finalLink
+                : `ipfs://${metadataResponse.IpfsHash}`
         });
-        unlinkSync(filepath);
-        console.log(metadata.url);
-        res.status(201).json({ finalLink: metadata.url });
     }
     catch (error) {
         console.error('Error creating NFT:', error);
