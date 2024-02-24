@@ -6,7 +6,7 @@ type NavButtonProps = {
   text: string;
 }
 
-export const btnClasses = "my-2 mx-1 p-2 rounded-lg bg-black text-white px-4";
+export const btnClasses = "mx-1 p-2 text-white px-4";
 
 const NavButton = (props: NavButtonProps) => {
   const { href, text } = props;
@@ -18,9 +18,9 @@ const NavButton = (props: NavButtonProps) => {
 export default function NavBar() {
   const { address, connectWallet, loading } = useSigner();
   return (
-    <div className='flex'>
-      <div className='flex-auto'>
-        <div className="pt-4 w-fit h-fit mx-auto">
+    <div className='fixed top-0 w-full h-16 bg-black flex content-center items-center'>
+      <div className='flex-auto h-fit'>
+        <div className="w-fit h-fit mx-auto">
           <NavButton href="/" text="Home" />
           <NavButton href="/owned" text="Owned" />
           <NavButton href="/create" text="Create" />

@@ -77,7 +77,7 @@ const NFTForm: React.FC<NFTFormProps> = ({ onSubmit }) => {
         </div>
       )}
       <br />
-      <button type="submit" className={btnClasses}>
+      <button type="submit" className={btnClasses + " bg-black rounded-lg"}>
         Submit
       </button>
     </form>

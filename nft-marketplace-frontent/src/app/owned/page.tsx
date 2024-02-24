@@ -8,22 +8,25 @@ export default function OwnedPage() {
 
   return (
     <div>
-
-      <div>
+      <div className="flex flex-wrap gap-5 p-5 mx-auto">
         {
           ownedNFTs?.map((nft) => (
             <NFTCard key={nft.id} nft={nft} />
           ))
         }
       </div>
-      <p>Owned Listed NFTs</p>
-      <div>
-        {
-          ownedListedNFTs?.map((nft) => (
-            <NFTCard key={nft.id} nft={nft} />
-          ))
-        }
-      </div>
+      {(ownedListedNFTs && ownedListedNFTs.length > 0) && (
+        <>
+          <p>Owned Listed NFTs</p>
+          <div>
+            {
+              ownedListedNFTs?.map((nft) => (
+                <NFTCard key={nft.id} nft={nft} />
+              ))
+            }
+          </div>
+        </>
+      )}
     </div>
   );
 }
