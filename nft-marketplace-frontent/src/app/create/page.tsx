@@ -6,6 +6,8 @@ import useNFTMarket from "../state/nft-market";
 import useSigner from "../state/signer";
 import { ChangeEvent, useState } from "react"
 import { btnClasses } from "../components/NavBar";
+import { useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 interface NFTFormProps {
   onSubmit: (formData: FormData) => void;
@@ -39,7 +41,6 @@ const NFTForm: React.FC<NFTFormProps> = ({ onSubmit }) => {
 
     onSubmit(formData);
   };
-
   return (
     <form onSubmit={handleSubmit} className="max-w-md mx-auto mt-8 p-4  rounded-md">
       <label className="block mb-4">
