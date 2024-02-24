@@ -21,8 +21,6 @@ export const SignerProvider = ({ children }: { children: ReactNode }) => {
   const [signer, setSigner] = useState<JsonRpcSigner>();
   const [address, setAddress] = useState<string>();
   const [loading, setLoading] = useState(false);
-
-
   useEffect(() => {
     const web3modal = new Web3Modal();
     if (web3modal.cachedProvider) connectWallet();
@@ -49,7 +47,6 @@ export const SignerProvider = ({ children }: { children: ReactNode }) => {
   return (
     <SignerContext.Provider value={contextValue}>
       <ApolloProvider client={client}>
-
         {children}
       </ApolloProvider>
     </SignerContext.Provider>

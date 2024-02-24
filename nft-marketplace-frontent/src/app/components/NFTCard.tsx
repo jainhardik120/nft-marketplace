@@ -2,7 +2,6 @@
 
 import classNames from "classnames";
 import { BigNumberish as BigNumber } from "ethers";
-import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import useNFTMarket from "../state/nft-market";
@@ -10,7 +9,6 @@ import { NFT } from "../state/nft-market/interfaces";
 import useSigner from "../state/signer";
 import { ipfsToHTTPS } from "../state/nft-market/helpers";
 import SellPopup from "./SellPopup";
-import Image from "next/image";
 
 type NFTMetadata = {
   name: string;
@@ -26,8 +24,7 @@ type NFTCardProps = {
 const NFTCard = (props: NFTCardProps) => {
   const { nft, className } = props;
   const { address } = useSigner();
-  const { listNFT , cancelListing} = useNFTMarket();
-//   const router = useRouter();
+  const { listNFT , cancelListing, buyNFT} = useNFTMarket();
   const [meta, setMeta] = useState<NFTMetadata>();
   const [loading, setLoading] = useState(false);
   const [sellPopupOpen, setSellPopupOpen] = useState(false);
@@ -65,7 +62,7 @@ const NFTCard = (props: NFTCardProps) => {
   const onBuyClicked = async () => {
     setLoading(true);
     try {
-    //   await buyNFT(nft);
+      await buyNFT(nft);
       toast.success(
         "You collection will be updated shortly! Refresh the page."
       );

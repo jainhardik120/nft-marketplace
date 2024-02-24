@@ -11,8 +11,8 @@ type SellPopupProps = {
 
 function SellPopup(props: SellPopupProps) {
 	const { open, onClose, onSubmit } = props;
-	const [price, setPrice] = useState(0);
-	const handleSubmit = (e : React.FormEvent) => {
+	const [price, setPrice] = useState<BigNumberish>(0);
+	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
 		onSubmit(price);
 	}
@@ -23,7 +23,7 @@ function SellPopup(props: SellPopupProps) {
 					<div className="fixed top-0 left-0 right-0 bottom-0 bg-black/70">
 						<div className="m-15 p-5 bg-white w-2/5 relative rounded-lg">
 							<form onSubmit={handleSubmit}>
-								<input type="number" value={price} onChange={(e)=>{setPrice(parseInt(e.target.value))}}/>
+								<input type="number" value={price.toString()} onChange={(e) => { setPrice(parseInt(e.target.value)) }} />
 								<button onClick={onClose}>
 									Close
 								</button>

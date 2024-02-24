@@ -1,12 +1,13 @@
 "use client"
 
-import { Contract } from "ethers";
+import { Contract, ethers } from "ethers";
 import useSigner from "../signer"
 import MarketPlace from "../../../../artifacts/contracts/MarketPlace.json"
 import useOwnedNFTs from "./useOwnedNFTs";
 import useOwnedListedNFTs from "./useOwnedListedNFTs";
 import useListedNFTs from "./useListedNFTs";
-import { BigNumberish, TransactionResponse } from "ethers";
+import { BigNumberish, TransactionResponse, parseEther } from "ethers";
+import { NFT } from "./interfaces";
 
 const useNFTMarket = () => {
     const { signer } = useSigner();
@@ -56,8 +57,18 @@ const useNFTMarket = () => {
         }
     }
 
+    const buyNFT = async (nft : NFT) =>{
+        try {
+            console.log(parseEther(nft.price));
+            const transaction : TransactionResponse = await contract.buyNFT(nft.id, {value : parseEther(nft.price)})
+            await transaction.wait();
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
     return {
-        createNFT, ownedNFTs, listNFT, ownedListedNFTs, cancelListing, listedNFTs
+        createNFT, ownedNFTs, listNFT, ownedListedNFTs, cancelListing, listedNFTs, buyNFT
     }
 }
 
