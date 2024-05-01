@@ -1,7 +1,18 @@
+type Transfers @entity{
+  id : Bytes!
+  from : Bytes!
+  to : Bytes!
+  tokenId : BigInt!
+  blockNumber : BigInt!
+  transactionHash : Bytes!
+}
+
 type NFT @entity {
   id: ID!
-  from: Bytes!
-  to: Bytes!
+  creator: Bytes!
+  currentOwner: Bytes!
   tokenURI: String! 
-  price: BigInt! 
+  price: BigInt
+  isListed : Boolean!
+  blockNumber : BigInt!
 }

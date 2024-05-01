@@ -9,6 +9,7 @@ import { NFT } from "../state/nft-market/interfaces";
 import useSigner from "../state/signer";
 import { ipfsToHTTPS } from "../state/nft-market/helpers";
 import SellPopup from "./SellPopup";
+import Link from "next/link";
 
 type NFTMetadata = {
   name: string;
@@ -24,7 +25,7 @@ type NFTCardProps = {
 const NFTCard = (props: NFTCardProps) => {
   const { nft, className } = props;
   const { address } = useSigner();
-  const { listNFT , cancelListing, buyNFT} = useNFTMarket();
+  const { listNFT, cancelListing, buyNFT } = useNFTMarket();
   const [meta, setMeta] = useState<NFTMetadata>();
   const [loading, setLoading] = useState(false);
   const [sellPopupOpen, setSellPopupOpen] = useState(false);
@@ -113,11 +114,13 @@ const NFTCard = (props: NFTCardProps) => {
       )}
     >
       {meta ? (
-        <img
-          src={meta?.imageURL}
-          alt={meta?.name}
-          className="h-80 w-full object-cover object-center"
-        />
+        <Link href={`/token/${nft.id}`}>
+          <img
+            src={meta?.imageURL}
+            alt={meta?.name}
+            className="h-80 w-full object-cover object-center"
+          />
+        </Link>
       ) : (
         <div className="flex h-80 w-full items-center justify-center">
           loading...

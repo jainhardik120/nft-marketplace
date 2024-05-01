@@ -1,8 +1,35 @@
 export type NFT = {
-    id: string;
-    // Owner of NFT, if NFT is listed for sale, this will be the seller address
-    owner: string;
-    // If price > 0, the NFT is for sale
-    price: string;
-    tokenURI: string;
-  };
+  id: string;
+  owner: string;
+  price: string;
+  tokenURI: string;
+};
+
+export type RawNFT = {
+  __typename: "NFT";
+  id: string;
+  creator: any;
+  currentOwner: any;
+  tokenURI: string;
+  price: BigInt | null;
+  blockNumber: BigInt;
+}
+
+export type RawNFTs = {
+  nfts: RawNFT[];
+}
+
+export type RawTransfer = {
+  id: string;
+  from: any;
+  to: any;
+  tokenId: string;
+  blockNumber: BigInt;
+  transactionHash: string;
+}
+
+
+export type NFTDetails = {
+  nft: RawNFT;
+  transfers_collection: RawTransfer[];
+}

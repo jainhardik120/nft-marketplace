@@ -1,4 +1,4 @@
-require('dotenv').config(); //all the key value pairs are being made available due to this lib
+require('dotenv').config();
 require("@nomicfoundation/hardhat-toolbox");
     
 module.exports = {

@@ -1,20 +1,9 @@
 import { gql, useQuery } from "@apollo/client";
 import useSigner from "../signer";
-import { NFT as mNFT } from "./interfaces";
-import {formatEther} from "ethers";
+import { RawNFT, RawNFTs, NFT as mNFT } from "./interfaces";
+import { formatEther } from "ethers";
+import { rawNFTMapper } from "./helpers";
 
-type NFT = {
-    __typename: "NFT";
-    id: string;
-    from: any;
-    to: any;
-    tokenURI: string;
-    price: any;
-}
-
-type OwnedNFTs = {
-    nfts: NFT[];
-}
 
 type OwnedNFTsVariables = {
     owner: string
@@ -22,24 +11,20 @@ type OwnedNFTsVariables = {
 
 const useOwnedListedNFTs = () => {
     const { address } = useSigner();
-    const { data, error, loading } = useQuery<OwnedNFTs, OwnedNFTsVariables>(GET_OWNED_NFTS, { variables: { owner: address ?? "" }, skip: !address });
-    const ownedNFTs = data?.nfts.map((raw) => <mNFT>{
-        id: raw.id,
-        owner: raw.price == "0" ? raw.to : raw.from,
-        price: raw.price == "0" ? "0" : formatEther(raw.price),
-        tokenURI: raw.tokenURI,
-    });
+    const { data, error, loading } = useQuery<RawNFTs, OwnedNFTsVariables>(GET_OWNED_NFTS, { variables: { owner: address ?? "" }, skip: !address });
+    const ownedNFTs = data?.nfts.map(rawNFTMapper);
     return { ownedListedNFTs: ownedNFTs };
 }
 
 const GET_OWNED_NFTS = gql`
     query GetOwnedNfts($owner : String!) {
-        nfts(where : {from : $owner, price_not : "0"}) {
+        nfts(where : {currentOwner : $owner, isListed : true}) {
             id
-            from
-            to
-            tokenURI
-            price
+        creator
+        currentOwner
+        tokenURI
+        price
+        blockNumber
         }
     }
 `

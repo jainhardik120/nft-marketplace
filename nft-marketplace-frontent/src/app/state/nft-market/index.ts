@@ -8,6 +8,7 @@ import useOwnedListedNFTs from "./useOwnedListedNFTs";
 import useListedNFTs from "./useListedNFTs";
 import { BigNumberish, TransactionResponse, parseEther } from "ethers";
 import { NFT } from "./interfaces";
+import GetNFTDetails from "./getNFTDetails";
 
 const useNFTMarket = () => {
     const { signer } = useSigner();
@@ -17,6 +18,8 @@ const useNFTMarket = () => {
     const {ownedNFTs} = useOwnedNFTs();
     const {ownedListedNFTs} = useOwnedListedNFTs();
     const {listedNFTs} = useListedNFTs();
+
+    const nftDetails = GetNFTDetails;
 
     const createNFT = async (values: FormData) => {
         try {
@@ -68,7 +71,7 @@ const useNFTMarket = () => {
     }
 
     return {
-        createNFT, ownedNFTs, listNFT, ownedListedNFTs, cancelListing, listedNFTs, buyNFT
+        createNFT, ownedNFTs, listNFT, ownedListedNFTs, cancelListing, listedNFTs, buyNFT, nftDetails
     }
 }
 
